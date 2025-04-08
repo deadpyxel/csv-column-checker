@@ -35,10 +35,10 @@ import (
 //	} else {
 //	    fmt.Println("Empty columns:", emptyCols)
 //	}
-func CheckEmptyColumn(filePath string, delimiter string) ([]int, error) {
+func CheckEmptyColumn(filePath string, delimiter string) ([]int, []string, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open file: %w", err)
+		return nil, nil, fmt.Errorf("failed to open file: %w", err)
 	}
 	defer file.Close()
 
@@ -51,9 +51,9 @@ func CheckEmptyColumn(filePath string, delimiter string) ([]int, error) {
 	header, err := reader.Read()
 	if err != nil {
 		if err == io.EOF {
-			return nil, nil // Empty file, no empty columns
+			return nil, nil, nil // Empty file, no empty columns
 		}
-		return nil, fmt.Errorf("failed to read header row: %w", err)
+		return nil, nil, fmt.Errorf("failed to read header row: %w", err)
 	}
 	numCol := len(header)
 
@@ -66,7 +66,7 @@ func CheckEmptyColumn(filePath string, delimiter string) ([]int, error) {
 			if err == io.EOF {
 				break // End of file
 			}
-			return nil, fmt.Errorf("failed to read row: %w", err)
+			return nil, nil, fmt.Errorf("failed to read row: %w", err)
 		}
 		// Iterate through the columns in the row
 		for i := 0; i < numCol; i++ {
@@ -78,10 +78,12 @@ func CheckEmptyColumn(filePath string, delimiter string) ([]int, error) {
 	}
 	// Identify empty columns
 	var emptyCols []int
+	var emptyColNames []string
 	for i := 0; i < numCol; i++ {
 		if !hasValue[i] {
 			emptyCols = append(emptyCols, i)
+			emptyColNames = append(emptyColNames, header[i])
 		}
 	}
-	return emptyCols, nil
+	return emptyCols, emptyColNames, nil
 }
