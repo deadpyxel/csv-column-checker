@@ -109,11 +109,11 @@ func TestCheckEmptyColumn(t *testing.T) {
 			expectedErr:   false,
 		},
 		{
-			name:          "when only header is present returns empty slice",
+			name:          "when only header is present returns all fields",
 			csvContent:    "h1,h2,h3",
 			delimiter:     ",",
-			expectedIdx:   []int{},
-			expectedNames: []string{},
+			expectedIdx:   []int{0, 1, 2},
+			expectedNames: []string{"h1", "h2", "h3"},
 			expectedErr:   false,
 		},
 		{
