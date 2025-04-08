@@ -23,7 +23,7 @@ A command-line tool to check for completely empty columns in CSV files.
 2.  **Download and Install:**
 
     ```bash
-    go install github.com/yourusername/csv-column-checker@latest  # Replace with your repo path
+    go install github.com/deadpyxel/csv-column-checker@latest
     ```
 
     Make sure your `$GOPATH/bin` or `$HOME/go/bin` directory is in your system's `$PATH` to access the `csv-column-checker` executable.
